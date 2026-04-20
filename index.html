@@ -42,6 +42,115 @@
 				overflow-x: hidden;
 			}
 
+			/* ── LOADING SCREEN ── */
+			#loadingScreen {
+				position: fixed;
+				inset: 0;
+				background: var(--cream);
+				z-index: 9999;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0;
+			}
+			.loading-tag {
+				font-size: 10px;
+				letter-spacing: 6px;
+				text-transform: uppercase;
+				color: var(--stone);
+				margin-bottom: 18px;
+				font-family: var(--sans);
+				font-weight: 300;
+			}
+			.loading-names {
+				font-family: var(--serif);
+				font-size: clamp(22px, 6vw, 32px);
+				letter-spacing: 8px;
+				text-transform: uppercase;
+				color: var(--dark);
+				margin-bottom: 40px;
+				font-weight: 400;
+			}
+			.loading-names span {
+				letter-spacing: 6px;
+			}
+			.loading-bar-wrap {
+				width: 120px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 14px;
+			}
+			.loading-bar-track {
+				width: 100%;
+				height: 1px;
+				background: rgba(107, 101, 96, 0.2);
+				position: relative;
+				overflow: hidden;
+			}
+			.loading-bar-fill {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 0%;
+				background: var(--gold);
+				transition: width 0.1s linear;
+			}
+			.loading-pct {
+				font-size: 10px;
+				letter-spacing: 4px;
+				color: var(--muted);
+				font-family: var(--sans);
+				font-weight: 300;
+			}
+			@keyframes loadingFadeOut {
+				from {
+					opacity: 1;
+					transform: translateY(0);
+				}
+				to {
+					opacity: 0;
+					transform: translateY(-12px);
+				}
+			}
+			#loadingScreen.hide {
+				animation: loadingFadeOut 0.6s ease forwards;
+				pointer-events: none;
+			}
+
+			/* ── COVER SLIDE UP TRANSITION ── */
+			@keyframes coverSlideUp {
+				from {
+					transform: translateY(0);
+					opacity: 1;
+				}
+				to {
+					transform: translateY(-100%);
+					opacity: 0.6;
+				}
+			}
+			#cover.slide-up {
+				animation: coverSlideUp 0.85s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+				pointer-events: none;
+			}
+
+			/* ── MAIN PAGE FADE IN ── */
+			@keyframes mainFadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(30px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			#mainPage.entering {
+				animation: mainFadeIn 0.7s ease 0.5s both;
+			}
+
 			/* ── COVER ── */
 			#cover {
 				position: relative;
@@ -1279,6 +1388,18 @@
 		</style>
 	</head>
 	<body>
+		<!-- ══════════ LOADING SCREEN ══════════ -->
+		<div id="loadingScreen">
+			<div class="loading-tag">Wedding Invitation</div>
+			<div class="loading-names">Nida <span>&amp;</span> Sidiq</div>
+			<div class="loading-bar-wrap">
+				<div class="loading-bar-track">
+					<div class="loading-bar-fill" id="loadingFill"></div>
+				</div>
+				<div class="loading-pct" id="loadingPct">0 %</div>
+			</div>
+		</div>
+
 		<!-- ══════════ COVER ══════════ -->
 		<div id="cover">
 			<div class="cover-bg" id="coverBg">
@@ -1315,10 +1436,7 @@
 			</button>
 		</div>
 
-		<!-- Audio: letakkan file musik.mp3 di folder yang sama -->
-		<audio id="bgMusic" loop>
-			<source src="musik.mp3" type="audio/mpeg" />
-		</audio>
+		<!-- Audio dikelola via Web Audio API (tidak muncul di notifikasi sistem) -->
 
 		<!-- ══════════ MAIN PAGE ══════════ -->
 		<div id="mainPage">
@@ -1332,7 +1450,7 @@
 				<!-- Foto mempelai bulat -->
 				<div class="couple-row reveal">
 					<div class="couple-photo" id="photoMempelaiW">
-						<!-- GANTI: <img src="foto-mempelai-wanita.jpg" alt="Nida"> -->
+						<img src="foto-mempelai-wanita.JPG" alt="Nida" />
 						<div class="couple-photo-placeholder">
 							<svg viewBox="0 0 24 24">
 								<circle cx="12" cy="8" r="4" />
@@ -1343,7 +1461,7 @@
 					</div>
 					<div class="couple-and">&amp;</div>
 					<div class="couple-photo" id="photoMempelaiP">
-						<!-- GANTI: <img src="foto-mempelai-pria.jpg" alt="Sidiq"> -->
+						<img src="foto-mempelai-pria.JPG" alt="Sidiq" />
 						<div class="couple-photo-placeholder">
 							<svg viewBox="0 0 24 24">
 								<circle cx="12" cy="8" r="4" />
@@ -1411,7 +1529,7 @@
 			<div class="story-sec">
 				<div class="story-item reveal-l">
 					<div class="story-img">
-						<!-- GANTI: <img src="foto-story-1.jpg" alt="Story 1"> -->
+						GANTI: <img src="foto-story-1.jpeg" alt="Story 1" />
 						<div class="story-placeholder">
 							<svg viewBox="0 0 24 24">
 								<rect x="3" y="3" width="18" height="18" rx="1" />
@@ -1431,7 +1549,7 @@
 				</div>
 				<div class="story-item reverse reveal-r">
 					<div class="story-img">
-						<!-- GANTI: <img src="foto-story-2.jpg" alt="Story 2"> -->
+						<img src="foto-story-2.jpeg" alt="Story 2" />
 						<div class="story-placeholder">
 							<svg viewBox="0 0 24 24">
 								<rect x="3" y="3" width="18" height="18" rx="1" />
@@ -1843,44 +1961,178 @@
 
 			/* ── Open Invitation ── */
 			function openInvite() {
-				document.getElementById("cover").style.display = "none";
-				document.getElementById("mainPage").style.display = "block";
-				document.getElementById("musicBar").classList.add("visible");
-				initCountdown();
-				initReveal();
-				tryAutoplay();
-				window.scrollTo(0, 0);
+				var cover = document.getElementById("cover");
+				var main = document.getElementById("mainPage");
+
+				// Show main page behind cover first
+				main.style.display = "block";
+				main.classList.add("entering");
+
+				// Animate cover sliding up
+				cover.classList.add("slide-up");
+
+				cover.addEventListener(
+					"animationend",
+					function () {
+						cover.style.display = "none";
+						document.getElementById("musicBar").classList.add("visible");
+						initCountdown();
+						initReveal();
+						tryAutoplay();
+						window.scrollTo(0, 0);
+					},
+					{ once: true },
+				);
 			}
 
-			/* ── Music ── */
-			var playing = false;
-			var audio = document.getElementById("bgMusic");
-			function tryAutoplay() {
-				if (!audio.querySelector("source") && !audio.src) {
-					return;
+			/* ── Loading Screen ── */
+			(function () {
+				var fill = document.getElementById("loadingFill");
+				var pct = document.getElementById("loadingPct");
+				var val = 0;
+				var done = false;
+				var interval = setInterval(function () {
+					// Fast at start, slows near 90, waits for page load
+					var step = val < 60 ? 3 : val < 85 ? 1.2 : 0.4;
+					val = Math.min(val + step, 97);
+					fill.style.width = val + "%";
+					pct.textContent = Math.round(val) + " %";
+					if (val >= 97 && !done) {
+						clearInterval(interval);
+					}
+				}, 40);
+
+				function finishLoad() {
+					if (done) return;
+					done = true;
+					clearInterval(interval);
+					fill.style.width = "100%";
+					pct.textContent = "100 %";
+					setTimeout(function () {
+						var ls = document.getElementById("loadingScreen");
+						ls.classList.add("hide");
+						ls.addEventListener(
+							"animationend",
+							function () {
+								ls.style.display = "none";
+							},
+							{ once: true },
+						);
+					}, 380);
 				}
-				audio
-					.play()
-					.then(function () {
-						playing = true;
-						updateBtn();
-					})
-					.catch(function () {});
+
+				if (document.readyState === "complete") {
+					setTimeout(finishLoad, 600);
+				} else {
+					window.addEventListener("load", function () {
+						setTimeout(finishLoad, 400);
+					});
+					// Fallback if load never fires
+					setTimeout(finishLoad, 3500);
+				}
+			})();
+
+			/* ── Music (Web Audio API — tidak muncul di notifikasi sistem) ── */
+			var playing = false;
+			var audioCtx = null;
+			var audioBuffer = null;
+			var sourceNode = null;
+			var gainNode = null;
+			var audioReady = false;
+			var MUSIC_SRC = "music.mp3"; // Ganti dengan: 'musik.mp3'
+
+			function initAudioContext() {
+				if (audioCtx) return;
+				audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+				gainNode = audioCtx.createGain();
+				gainNode.gain.value = 0.85;
+				gainNode.connect(audioCtx.destination);
+
+				// Matikan audio saat tab tidak aktif / browser diminimize
+				document.addEventListener("visibilitychange", function () {
+					if (document.hidden) {
+						if (playing) pauseAudio();
+					}
+				});
+				// Matikan saat halaman akan ditutup/navigasi
+				window.addEventListener("pagehide", function () {
+					pauseAudio();
+				});
+				window.addEventListener("beforeunload", function () {
+					pauseAudio();
+				});
 			}
-			function toggleMusic() {
-				if (!audio.querySelector("source") && !audio.src) {
+
+			function loadAndPlay() {
+				if (!MUSIC_SRC) {
 					showToast("Tambahkan file musik.mp3 terlebih dahulu");
 					return;
 				}
-				if (playing) {
-					audio.pause();
-					playing = false;
-				} else {
-					audio.play();
-					playing = true;
+				initAudioContext();
+				if (audioCtx.state === "suspended") audioCtx.resume();
+
+				if (audioBuffer) {
+					startSource();
+					return;
 				}
+				fetch(MUSIC_SRC)
+					.then(function (r) {
+						return r.arrayBuffer();
+					})
+					.then(function (ab) {
+						return audioCtx.decodeAudioData(ab);
+					})
+					.then(function (buf) {
+						audioBuffer = buf;
+						startSource();
+					})
+					.catch(function () {
+						showToast("Gagal memuat file musik");
+					});
+			}
+
+			function startSource() {
+				stopSource();
+				sourceNode = audioCtx.createBufferSource();
+				sourceNode.buffer = audioBuffer;
+				sourceNode.loop = true;
+				sourceNode.connect(gainNode);
+				sourceNode.start(0);
+				playing = true;
 				updateBtn();
 			}
+
+			function stopSource() {
+				if (sourceNode) {
+					try {
+						sourceNode.stop();
+					} catch (e) {}
+					sourceNode.disconnect();
+					sourceNode = null;
+				}
+			}
+
+			function pauseAudio() {
+				if (!playing) return;
+				stopSource();
+				playing = false;
+				updateBtn();
+			}
+
+			function tryAutoplay() {
+				if (!MUSIC_SRC) return;
+				// Autoplay hanya jika user sudah pernah berinteraksi (klik buka undangan)
+				loadAndPlay();
+			}
+
+			function toggleMusic() {
+				if (playing) {
+					pauseAudio();
+				} else {
+					loadAndPlay();
+				}
+			}
+
 			function updateBtn() {
 				var disc = document.getElementById("vinylDisc");
 				if (playing) {
